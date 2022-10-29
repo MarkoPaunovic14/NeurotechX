@@ -25,7 +25,6 @@ app.use("/", meteoRoutes);
 app.use(function (req, res, next) {
     const err = new Error("Pokušali ste da učitate stranicu koja ne postoji: " + req.url);
     err.status = 404;
-
     next(err);
 });
 
