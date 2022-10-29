@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zadatak 1</title>
+    <link rel="stylesheet" type="text/css" href="1.css">
+</head>
+<body>
+    <nav>
+        <h1>Meteoroloske statistike</h1>
+    </nav>
+    <main>
+        <div class="left">
+            <h2>Tekuce informacije</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Grad</td>
+                        <td>Drzava</td>
+                        <td>Najniza temperatura</td>
+                        <td>Prosecna temperatura</td>
+                        <td>Najvisa temperatura</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Beograd</td>
+                        <td>Srbija</td>
+                        <td>24</td>
+                        <td>28.33 </td>
+                        <td>31</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Novi Sad</td>
+                        <td>Srbija</td>
+                        <td>26</td>
+                        <td>28.60 </td>
+                        <td>31</td>
+                    </tr>
+
+                    <tr>
+                        <td>Berlin</td>
+                        <td>Nemacka</td>
+                        <td>19</td>
+                        <td>21.40</td>
+                        <td>24</td>
+                    </tr>
+                    <tr>
+                        <td>Lisabon</td>
+                        <td>Portugal</td>
+                        <td>18</td>
+                        <td>19.17</td>
+                        <td>22</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="right">
+            <h2>Detaljne informacije</h2>
+            <form>
+                <label>Odaberite grad<span>*</span>:</label>
+            <select>
+                <option>Beograd</option>
+                <option>Novi Sad</option>
+                <option>Berlin</option>
+                <option>Lisabon</option>
+            </select>
+            <label>Urediti po<span>*</span>:</label>
+            <div class="btn">
+            <input type="radio" id="radioBtn1">
+            <label for="radioBtn1">Datum opadajuce</label>
+            <div class="btn">
+            <input type="radio" id="radioBtn2">
+            <label for="radioBtn2">Datum rastuce</label>
+            </div>
+            <input type="submit" value="Prikazi detaljne informacije" class="btnSubmit">
+        </form>
+        </div>
+    </main>
+</body>
+</html>

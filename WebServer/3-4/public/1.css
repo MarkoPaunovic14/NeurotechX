@@ -1,0 +1,77 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    width: 80%;
+    margin: auto;
+}
+nav h1{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: rgb(253, 255, 137);
+}
+main{
+    margin-top: 30px;
+    display:flex;
+    gap: 150px;
+    justify-content: center;
+}
+.left h2{
+    text-align: center;
+    background-color: rgb(253,255,137);
+}
+.left table{
+    margin-top:10px;
+    border-collapse: collapse;
+    border-top: solid rgb(253,255,137) 4px;
+    border-bottom: solid rgb(253,255,137) 4px; 
+}
+
+.right{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+span{
+    color: red;
+}
+h2{
+    background-color: rgb(253, 255, 137);
+    padding: 10px 50px;
+}
+
+.right form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.right select{
+    padding: 10px 10px;
+}
+.btnSubmit{
+    margin-top: 20px;
+    background-color: rgb(253, 255, 137);
+    padding: 15px 30px;
+    width: 100%;
+    border: solid 1px black;
+}
+.right label{
+    text-align: center;
+}
+
+.left table tr:nth-child(even){
+    background-color: lightgray;
+}
+table tr{
+    border-collapse: collapse;
+    border-top: solid 2px darkgray;
+}
+thead{
+    font-weight: bold;
+}
+
+td{
+    padding: 20px 10px;
+}
