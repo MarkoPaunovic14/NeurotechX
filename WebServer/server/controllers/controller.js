@@ -1,17 +1,19 @@
 const model = require('../models/users');
 
-async function dohvatiKorisnika(req, res, next) {
+async function pullUser(req, res, next) {
     try{
-    const korinsik = await model.dohvatiKorisnika();
-
+    const id = req.query.id;
+    const user = await model.dohvatiKorisnika(id);
     //uradi nesto
-
+    console.log(JSON.stringify(user));
+    res.render('1.ejs', {user});
+    // res.send(JSON.stringify(user));
     }catch(err){
         next(err);
     }
 }
 
-async function izmeniPodatke(req, res, next) {
+async function changeData(req, res, next) {
     try{
         const location = req.query.location;
         let notify = req.query.notify;
@@ -24,7 +26,19 @@ async function izmeniPodatke(req, res, next) {
     }
 }
 
+async function checkNotify(req, res, next) {
+    try{
+
+        //izmena podataka
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+
 module.exports = {
-    dohvatiKorisnika,
-    izmeniPodatke,
+    pullUser,
+    changeData,
+    checkNotify,
 };
