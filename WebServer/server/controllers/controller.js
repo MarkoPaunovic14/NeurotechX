@@ -11,7 +11,6 @@ async function pullUser(req, res, next) {
     }catch(err){
         next(err);
     }
-
 }
 
 async function changeData(req, res, next) {
