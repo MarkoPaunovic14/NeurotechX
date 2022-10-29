@@ -5,20 +5,19 @@ async function pullUser(req, res, next) {
     const id = req.query.id;
     const user = await model.pullUser(id);
     //uradi nesto
-    console.log(JSON.stringify(user.notify));
+    console.log(JSON.stringify(user));
     // res.render('1.ejs', {user});
-    res.send(JSON.stringify(user.notify));
+    res.send(JSON.stringify(user));
     }catch(err){
         next(err);
     }
-
 }
 
 async function changeData(req, res, next) {
     try{
-        const location = req.query.location;
-        let notify = req.query.notify;
-        let sleepy = req.query.sleepy;
+        const id = req.query.id;
+        const x = req.query.x;
+        const y = req.query.y;
         const korinsik = await model.changeData(location, notify, sleepy);
         //izmena podataka
     }
@@ -29,8 +28,7 @@ async function changeData(req, res, next) {
 
 async function checkNotify(req, res, next) {
     try{
-
-        //izmena podataka
+        
     }
     catch(err){
         next(err);
