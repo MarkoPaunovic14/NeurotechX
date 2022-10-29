@@ -15,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
@@ -47,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewLongitude;
     Button buttonGPS;
 
+    LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,25 +71,53 @@ public class MainActivity extends AppCompatActivity {
         textViewLongitude = findViewById(R.id.textview_longitude);
         buttonGPS = findViewById(R.id.button);
 
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
+        final Handler handler = new Handler();
+        final int delay = 10000; // 1000 milliseconds == 1 second
 
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                System.out.println("Running location fetching every 10 seconds!"); // Do your work here
+                handler.postDelayed(this, delay);
 
+                updateLocation();
             }
 
+            private void updateLocation() {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
 
-        });
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        textViewLatitude.setText(String.valueOf(location.getLatitude()));
+                        textViewLongitude.setText(String.valueOf(location.getLongitude()));
+                    }
+                });
+            }
+        }, delay);
+
 
         buttonGPS.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                updateLocation();
+            }
 
+            private void updateLocation() {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                }
+
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(@NonNull Location location) {
+                        textViewLatitude.setText(String.valueOf(location.getLatitude()));
+                        textViewLongitude.setText(String.valueOf(location.getLongitude()));
+                    }
+                });
             }
         });
 
@@ -106,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
