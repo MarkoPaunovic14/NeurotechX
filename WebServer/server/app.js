@@ -3,14 +3,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/MeteoStat", {
+    .connect("mongodb://127.0.0.1:27017/NeurotechX", {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
     .then(() => console.log("Uspesno povezivanje na BP"))
     .catch((err) => console.log("Neuspesno povezivanje na BP:", err));
 
-const meteoRoutes = require("./routes/meteo");
+const meteoRoutes = require("./routes/users");
 
 const app = express();
 
