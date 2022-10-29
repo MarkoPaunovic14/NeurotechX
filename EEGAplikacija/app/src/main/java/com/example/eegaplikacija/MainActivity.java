@@ -1,6 +1,9 @@
 package com.example.eegaplikacija;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +16,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,6 +26,8 @@ import com.example.eegaplikacija.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -33,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
     boolean turnedOn = false;
 
     private static MediaPlayer mp;
+
+    TextView textViewLatitude;
+    TextView textViewLongitude;
+    Button buttonGPS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +60,21 @@ public class MainActivity extends AppCompatActivity {
 
         mp = MediaPlayer.create(this, R.raw.ringtone1);
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        textViewLatitude = findViewById(R.id.textview_latitude);
+        textViewLongitude = findViewById(R.id.textview_longitude);
+        buttonGPS = findViewById(R.id.button);
+
+        buttonGPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                }
+        });
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
