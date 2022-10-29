@@ -1,11 +1,7 @@
 package com.example.eegaplikacija;
 
 import android.Manifest;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -25,8 +21,6 @@ import android.os.Vibrator;
 import android.view.View;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -88,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(this, delay);
 
                 updateLocation();
-
-                checkNotify();
             }
 
             private void updateLocation() {
@@ -104,46 +96,6 @@ public class MainActivity extends AppCompatActivity {
                         textViewLongitude.setText(String.valueOf(location.getLongitude()));
                     }
                 });
-            }
-
-            private void checkNotify(){
-                // TODO Parsiraj signal od servera i ako je notify == 1 pali zvuk i vibraciju
-
-
-
-                int notify = 1;
-                int sleepy = 0;
-
-                if(sleepy == 1){
-
-                    if (mp.isPlaying()) {
-                        mp.seekTo(0);
-                    } else {
-                        mp.start();
-                        v.vibrate(3000);
-                    }
-
-                    Snackbar.make(getWindow().getDecorView(), "Playing sound.", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-
-                }
-                if(notify == 1){
-
-//                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MainActivity.this)
-//                            .setSmallIcon(R.drawable.ic_launcher_background) // notification icon
-//                            .setContentTitle("Simple notification") // title
-//                            .setContentText("Hello word") // body message
-//                            .setAutoCancel(true); // clear notification when clicked
-//
-//                    Intent intent = new Intent(MainActivity.this, MainActivity.class);
-//                    PendingIntent pi = PendingIntent.getActivity(MainActivity.this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-//                    mBuilder.setContentIntent(pi);
-//
-//                    NotificationManager mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-//                    mNotificationManager.notify(0, mBuilder.build());
-                }
-
-                // TODO Vrati notify i sleepy na default vrednost
             }
         }, delay);
 
@@ -176,6 +128,12 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Playing sound.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
+                if (mp.isPlaying()) {
+                    mp.seekTo(0);
+                } else {
+                    mp.start();
+                    v.vibrate(3000);
+                }
             }
         });
     }
