@@ -24,16 +24,23 @@ sleepy:{
 }
 }, {collection: "Users"});
 
-const modelStat = mongoose.model('Users', schema);
+const modelUser = mongoose.model('Users', schema);
 
-async function dohvatiKorisnika() {
+async function pullUser(id) {
+    const user = await modelUser.findOne({id: id}).exec();
+    return user;
+}
+
+async function changeData(location, notify, sleepy) {
 
 }
 
-async function izmeniPodatke(location, notify, sleepy) {
+async function checkNotify(){
 
 }
+
 module.exports = {
-    dohvatiKorisnika,
-    izmeniPodatke,
+    pullUser,
+    changeData,
+    checkNotify,
 };
