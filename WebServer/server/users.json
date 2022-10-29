@@ -1,0 +1,50 @@
+[{
+    "id": 1,
+    "name": "Marko Jovicic",
+    "location":{
+        "x": 0,
+        "y": 0
+    },
+    "notify": 0,
+    "sleepy": 0
+},
+{
+    "id": 2,
+    "name": "Marko Paunovic",
+    "location":{
+        "x": 0,
+        "y": 0
+    },
+    "notify": 0,
+    "sleepy": 0
+},
+{
+    "id": 3,
+    "name": "Marko Petrovic",
+    "location":{
+        "x": 0,
+        "y": 0
+    },
+    "notify": 0,
+    "sleepy": 0
+},
+{
+    "id": 4,
+    "name": "Nikola Nikolic",
+    "location":{
+        "x": 0,
+        "y": 0
+    },
+    "notify": 0,
+    "sleepy": 0
+},
+{
+    "id": 5,
+    "name": "Mika Mikic",
+    "location":{
+        "x": 0,
+        "y": 0
+    },
+    "notify": 0,
+    "sleepy": 0
+}]
