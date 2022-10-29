@@ -8,5 +8,4 @@ router.get('/locationChange', controller.changeData);
 router.get('/checkNotify', controller.checkNotify);
 router.get('/pullUser', controller.pullUser)
 
-
 module.exports = router;
