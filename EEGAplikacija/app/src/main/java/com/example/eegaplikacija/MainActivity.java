@@ -1,18 +1,25 @@
 package com.example.eegaplikacija;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.view.View;
 
+import androidx.core.app.ActivityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -22,6 +29,8 @@ import com.example.eegaplikacija.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -33,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
     boolean turnedOn = false;
 
     private static MediaPlayer mp;
+
+    TextView textViewLatitude;
+    TextView textViewLongitude;
+    Button buttonGPS;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +63,33 @@ public class MainActivity extends AppCompatActivity {
 
         mp = MediaPlayer.create(this, R.raw.ringtone1);
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        textViewLatitude = findViewById(R.id.textview_latitude);
+        textViewLongitude = findViewById(R.id.textview_longitude);
+        buttonGPS = findViewById(R.id.button);
+
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        }
+
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+
+            }
+
+
+        });
+
+        buttonGPS.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
