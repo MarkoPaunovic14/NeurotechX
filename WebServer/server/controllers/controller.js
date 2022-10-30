@@ -6,8 +6,8 @@ async function pullUser(req, res, next) {
     const user = await model.pullUser(id);
     //uradi nesto
     console.log(JSON.stringify(user));
-    // res.render('1.ejs', {user});
-    res.send(JSON.stringify(user));
+    res.render('1.ejs', {user});
+    //res.send(JSON.stringify(user));
     }catch(err){
         next(err);
     }
@@ -18,7 +18,9 @@ async function changeData(req, res, next) {
         const id = req.query.id;
         const x = req.query.x;
         const y = req.query.y;
-        const korinsik = await model.changeData(location, notify, sleepy);
+        const user = await model.changeData(id, x, y);
+        console.log("Changed user ------> " + user)
+        res.render('1.ejs', {user});
         //izmena podataka
     }
     catch(err){

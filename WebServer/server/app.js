@@ -20,7 +20,7 @@ app.set("views", "views");
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/meteo", meteoRoutes);
+app.use("/", meteoRoutes);
 
 app.use(function (req, res, next) {
     const err = new Error("Pokušali ste da učitate stranicu koja ne postoji: " + req.url);

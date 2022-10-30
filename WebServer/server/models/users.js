@@ -31,8 +31,13 @@ async function pullUser(id) {
     return user;
 }
 
-async function changeData(location, notify, sleepy) {
-
+async function changeData(id, x, y){
+    
+    const doc = await modelUser.findOne({id:id}).exec();
+    doc.location = {x : Number(x), y : Number(y)};
+    // doc.location.y = Number(y);
+    doc.save();
+    return doc;    
 }
 
 async function checkNotify(){
