@@ -87,6 +87,7 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
         if(result != null) {
 
             result = result.trim();
+            System.out.println(result);
 
             System.out.println("Notify = " + result.charAt(result.length() - 16));
             if ("1".charAt(0) == result.charAt(result.length() - 16)) {
@@ -98,8 +99,9 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
             System.out.println("Sleepy = " + result.charAt(result.length() - 3));
             if ("1".charAt(0) == result.charAt(result.length() - 3)) {
                 if (mpSleepy.isPlaying()) {
-                    mpSleepy.seekTo(0);
+
                 } else {
+                    mpSleepy.seekTo(0);
                     mpSleepy.start();
                     MainActivity.v.vibrate(3000);
                 }
