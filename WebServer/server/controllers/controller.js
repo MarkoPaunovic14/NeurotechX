@@ -42,7 +42,7 @@ async function changeNotify(req, res, next) {
 
 async function setSleepy(req, res, next){
     try {
-     const id = req.query;
+     const id = req.query.id;
      const user = await model.setSleepy(id);
      console.log("Change sleepy to 1 for user ---> " + user.id);
      res.render('1.ejs', {user});   
@@ -53,8 +53,8 @@ async function setSleepy(req, res, next){
 
 async function resetSleepy(req, res, next){
     try {
-        const id = req.query;
-        const user = await model.setSleepy(id);
+        const id = req.query.id;
+        const user = await model.resetSleepy(id);
         console.log("Change sleepy to 0 for user ---> " + user.id);
         res.render('1.ejs', {user});   
        } catch (err) {

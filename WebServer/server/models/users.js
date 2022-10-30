@@ -47,14 +47,14 @@ async function changeNotify(){
     return doc;
 }
 
-async function setSleepy(){
+async function setSleepy(id){
     const doc = await modelUser.findOne({id: id}).exec();
     doc.sleepy = 1;
     doc.save();
     return doc;
 }
 
-async function resetSleepy(){
+async function resetSleepy(id){
     const doc = await modelUser.findOne({id: id}).exec();
     doc.sleepy = 0;
     doc.save();
