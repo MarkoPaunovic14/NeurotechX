@@ -28,7 +28,7 @@ async function changeData(req, res, next) {
     }
 }
 
-async function checkNotify(req, res, next) {
+async function changeNotify(req, res, next) {
     try{
         
     }
@@ -41,5 +41,5 @@ async function checkNotify(req, res, next) {
 module.exports = {
     pullUser,
     changeData,
-    checkNotify,
+    changeNotify,
 };

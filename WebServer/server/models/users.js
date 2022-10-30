@@ -40,12 +40,12 @@ async function changeData(id, x, y){
     return doc;    
 }
 
-async function checkNotify(){
+async function changeNotify(){
 
 }
 
 module.exports = {
     pullUser,
     changeData,
-    checkNotify,
+    changeData,
 };
