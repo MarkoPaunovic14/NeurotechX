@@ -1,6 +1,7 @@
 package com.example.alertonroad;
 
-import android.app.ProgressDialog;
+import static com.example.alertonroad.MainActivity.mp;
+
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -12,15 +13,16 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class JsonTask extends AsyncTask<String, String, String> {
+public class UpdateDataTask extends AsyncTask<String, String, String> {
+
 
     protected void onPreExecute() {
         super.onPreExecute();
-
-        pd = new ProgressDialog(MainActivity.this);
-        pd.setMessage("Please wait");
-        pd.setCancelable(true);
-        pd.show();
+//
+//        pd = new ProgressDialog(MainActivity.this);
+//        pd.setMessage("Please wait");
+//        pd.setCancelable(true);
+//        pd.show();
     }
 
     protected String doInBackground(String... params) {
@@ -76,30 +78,30 @@ public class JsonTask extends AsyncTask<String, String, String> {
     @Override
     protected void onPostExecute(String result) {
         super.onPostExecute(result);
-        if (pd.isShowing()){
-            pd.dismiss();
-        }
+//        if (pd.isShowing()){
+//            pd.dismiss();
+//        }
         if(result != null) {
 
             result = result.trim();
 //                System.out.println("Result = " + result);
             //notify
-            System.out.println("Notify = " + result.charAt(result.length() - 3));
-            if ("1".charAt(0) == result.charAt(result.length() - 3)) {
-                Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
+            System.out.println("Notify = " + result.charAt(result.length() - 16));
+            if ("1".charAt(0) == result.charAt(result.length() - 16)) {
+//                Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
                 // Moze notifikacija
                 // TODO Sound upozorenja, UPDATE server
             }
 
             //sleepy
-            System.out.println("Sleepy = " + result.charAt(result.length() - 16));
-            if ("1".charAt(0) == result.charAt(result.length() - 16)) {
-                Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
+            System.out.println("Sleepy = " + result.charAt(result.length() - 3));
+            if ("1".charAt(0) == result.charAt(result.length() - 3)) {
+//                Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
                 if (mp.isPlaying()) {
                     mp.seekTo(0);
                 } else {
                     mp.start();
-                    v.vibrate(3000);
+                    MainActivity.v.vibrate(3000);
                 }
             }
         }

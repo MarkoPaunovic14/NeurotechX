@@ -36,13 +36,14 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
-    private String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
-    private String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
+    private final String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
+    private final String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
+    private final String SLEEPY_URL = "http://192.168.0.13:3000/resetSleepy/?id=2";
 
 
     LocationManager locationManager;
-    private static MediaPlayer mp;
-    Vibrator v;
+    public static MediaPlayer mp;
+    public static Vibrator v;
 
 
     Button btnAwake;
@@ -54,14 +55,21 @@ public class MainActivity extends AppCompatActivity {
 
         mp = MediaPlayer.create(this, R.raw.ringtone1);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
 
 
         btnAwake = findViewById(R.id.btnAwake);
+        btnAwake.setEnabled(true);
         btnAwake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // TODO UPDATE server da je sleepy = 0
+
+                new UpdateLocationTask().execute(SLEEPY_URL);
+                if (mp != null) {
+                    if (mp.isPlaying())
+                        mp.stop();
+                }
             }
         });
 
@@ -77,25 +85,24 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(this, delay);
 
                 updateLocation();
-                new JsonTask().execute(BASE_URL);
+                // Notify i Sleepy update
+                new UpdateDataTask().execute(BASE_URL);
             }
 
             private void updateLocation() {
                 if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 } else {
-                    Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
                 }
-
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
-                        // TODO UPDATE Location
-
                         StringBuilder locationUrl = new StringBuilder(LOCATION_URL);
                         locationUrl.append(String.valueOf(location.getLatitude()));
                         locationUrl.append("&y=");
                         locationUrl.append(String.valueOf(location.getLongitude()));
+
                         new UpdateLocationTask().execute(String.valueOf(locationUrl));
                     }
 
@@ -118,73 +125,6 @@ public class MainActivity extends AppCompatActivity {
         }, delay);
 
     }
-
-    private class UpdateLocationTask extends AsyncTask<String, String, String> {
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pd = new ProgressDialog(MainActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(true);
-            pd.show();
-        }
-
-        protected String doInBackground(String... params) {
-
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-                System.out.println(url);
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-
-
-//                System.out.println(result);
-
-                return "";
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
-            }
-
-        }
-    }
-
-
-
 
 
 }
