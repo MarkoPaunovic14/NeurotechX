@@ -37,7 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
     private RetrofitInterface retrofitInterface;
-    private String BASE_URL = "http://192.168.1.10:3000/pullUser/?id=2";
+    private String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
+    private String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
 
 
     LocationManager locationManager;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textViewLatitude;
     TextView textViewLongitude;
 
-    Button btnHit;
+
     Button btnAwake;
     TextView txtJson;
     ProgressDialog pd;
@@ -64,16 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         textViewLatitude = findViewById(R.id.textview_latitude);
         textViewLongitude = findViewById(R.id.textview_longitude);
-        btnHit = (Button) findViewById(R.id.btnHit);
         btnAwake = findViewById(R.id.btnAwake);
         txtJson = (TextView) findViewById(R.id.tvJsonItem);
-
-        btnHit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new JsonTask().execute(BASE_URL);
-            }
-        });
 
         btnAwake.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,15 +91,25 @@ public class MainActivity extends AppCompatActivity {
             }
 
             private void updateLocation() {
-                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                } else {
+                    Toast.makeText(MainActivity.this, "Permission already granted", Toast.LENGTH_SHORT).show();
                 }
 
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
+                        System.out.println("AAAAAAAAAAAAAAA" + String.valueOf(location.getLatitude()));
+                        // TODO UPDATE Location
                         textViewLatitude.setText(String.valueOf(location.getLatitude()));
                         textViewLongitude.setText(String.valueOf(location.getLongitude()));
+
+                        StringBuilder locationUrl = new StringBuilder(LOCATION_URL);
+                        locationUrl.append(String.valueOf(location.getLatitude()));
+                        locationUrl.append("&y=");
+                        locationUrl.append(String.valueOf(location.getLongitude()));
+                        new UpdateLocationTask().execute(String.valueOf(locationUrl));
                     }
 
                     @Override
@@ -127,6 +130,62 @@ public class MainActivity extends AppCompatActivity {
             }
         }, delay);
 
+    }
+
+    private class UpdateLocationTask extends AsyncTask<String, String, String> {
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            pd = new ProgressDialog(MainActivity.this);
+            pd.setMessage("Please wait");
+            pd.setCancelable(false);
+            pd.show();
+        }
+
+        protected String doInBackground(String... params) {
+
+
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+
+
+                return "";
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (pd.isShowing()){
+                pd.dismiss();
+            }
+
+        }
     }
 
     private class JsonTask extends AsyncTask<String, String, String> {
@@ -164,6 +223,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
                 }
+//
+//                String result = buffer.toString();
+//                result = result.replaceAll("<[^>]*>", "");
 
                 return buffer.toString();
 
@@ -193,26 +255,29 @@ public class MainActivity extends AppCompatActivity {
             if (pd.isShowing()){
                 pd.dismiss();
             }
-            txtJson.setText(result);
+            if(result != null) {
 
-            //notify
-            if("1".charAt(0) == result.trim().charAt(result.length()-3)){
-                Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
-                // Moze notifikacija
-                // TODO Sound upozorenja, UPDATE server
-            }
+                //notify
+                if ("1".charAt(0) == result.trim().charAt(result.length() - 3)) {
+                    Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
+                    // Moze notifikacija
+                    // TODO Sound upozorenja, UPDATE server
+                }
 
-            //sleepy
-            if("1".charAt(0) == result.trim().charAt(result.length()-14)){
-                Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
-                if (mp.isPlaying()) {
-                    mp.seekTo(0);
-                } else {
-                    mp.start();
-                    v.vibrate(3000);
+                //sleepy
+                if ("1".charAt(0) == result.trim().charAt(result.length() - 14)) {
+                    Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
+                    if (mp.isPlaying()) {
+                        mp.seekTo(0);
+                    } else {
+                        mp.start();
+                        v.vibrate(3000);
+                    }
                 }
             }
         }
     }
+
+
 
 }
