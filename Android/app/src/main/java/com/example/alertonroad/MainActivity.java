@@ -23,6 +23,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,9 +38,10 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
-    private final String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=3";
-    private final String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=3&x=";
-    private final String SLEEPY_URL = "http://192.168.0.13:3000/resetSleepy/?id=3";
+    private final String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
+    private final String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
+    private final String SLEEPY_URL = "http://192.168.0.13:3000/resetSleepy/?id=2";
+    private final String NOTIFY_URL = "http://192.168.0.13:3000/changeNotify/?id=2";
 
 
     LocationManager locationManager;
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button btnAwake;
+    Button btnAware;
     ProgressDialog pd;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +66,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         btnAwake = findViewById(R.id.btnAwake);
-        btnAwake.setEnabled(true);
+        btnAware = findViewById(R.id.btnAware);
+
         btnAwake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,9 +87,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnAware.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO UPDATE server da je sleepy = 0
+
+                new UpdateLocationTask().execute(NOTIFY_URL);
+                if (mpNotify != null) {
+                    if (mpNotify.isPlaying()){
+                        mpNotify.stop();
+                        try {
+                            mpNotify.prepare();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        });
+
 
         final Handler handler = new Handler();
-        final int delay = 5000; // 1000 milliseconds == 1 second
+        final int delay = 8000; // 1000 milliseconds == 1 second
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
