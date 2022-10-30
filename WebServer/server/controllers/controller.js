@@ -30,7 +30,7 @@ async function changeData(req, res, next) {
 
 async function changeNotify(req, res, next) {
     try{
-        const id = req.query;
+        const id = req.query.id;
         const user = await model.changeNotify(id);
         console.log("Changed notify back to 0 for user --> " + user.id);
         res.render('1.ejs', {user});

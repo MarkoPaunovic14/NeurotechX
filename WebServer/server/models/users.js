@@ -40,7 +40,7 @@ async function changeData(id, x, y){
     return doc;    
 }
 
-async function changeNotify(){
+async function changeNotify(id){
     const doc = await modelUser.findOne({id: id}).exec();
     doc.notify = 0;
     doc.save();
@@ -51,6 +51,7 @@ async function setSleepy(id){
     const doc = await modelUser.findOne({id: id}).exec();
     doc.sleepy = 1;
     doc.save();
+    notifyAll(doc.id);
     return doc;
 }
 
@@ -62,12 +63,26 @@ async function resetSleepy(id){
 }
 
 
-
+async function notifyAll(id){
+    const doc = await modelUser.findOne({id: id}).exec();
+    const allUsers = await modelUser.find({}).exec();
+    for(let i = 0; i < 4; i++){
+        if(allUsers[i].sleepy == 1){
+            allUsers[i].notify = 0;
+            console.log("uslo");
+            continue;
+        }
+        allUsers[i].notify = 1;
+    }
+    for(let i = 0; i < 4; i++){
+        allUsers[i].save();
+    }
+}
 
 
 module.exports = {
     pullUser,
-    changeData,
+    changeNotify,
     changeData,
     setSleepy,
     resetSleepy,
