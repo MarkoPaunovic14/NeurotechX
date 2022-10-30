@@ -87,19 +87,16 @@ public class UpdateDataTask extends AsyncTask<String, String, String> {
         if(result != null) {
 
             result = result.trim();
-            //notify
+
             System.out.println("Notify = " + result.charAt(result.length() - 16));
             if ("1".charAt(0) == result.charAt(result.length() - 16)) {
-//                Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
-                // Moze notifikacija
                 mpNotify.start();
                 MainActivity.v.vibrate(1000);
 
             }
-            //sleepy
+
             System.out.println("Sleepy = " + result.charAt(result.length() - 3));
             if ("1".charAt(0) == result.charAt(result.length() - 3)) {
-//                Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
                 if (mpSleepy.isPlaying()) {
                     mpSleepy.seekTo(0);
                 } else {
