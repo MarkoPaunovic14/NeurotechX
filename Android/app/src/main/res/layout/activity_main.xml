@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:gravity="center"
-        android:text="🚨 Alert On Road 🚨"
+        android:text="🚨 Alert 🚨"
         android:textColor="@color/design_default_color_on_secondary"
-        android:textSize="32dp"
+        android:textSize="36dp"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -24,16 +24,14 @@
         android:layout_height="0dip"
         android:layout_weight="1"
         android:gravity="center|bottom"
-        android:orientation="horizontal" >
+        android:orientation="vertical" >
 
         <Button
             android:id="@+id/btnAwake"
             style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="100dp"
-            android:layout_marginRight="100dp"
+            android:layout_width="230dp"
+            android:layout_height="230dp"
+            android:layout_gravity="bottom|center"
 
             android:background="@drawable/mybutton"
             android:enabled="true"
@@ -44,6 +42,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
             android:layout_marginLeft="55dp"
             android:layout_marginTop="55dp"
             android:layout_marginRight="55dp"

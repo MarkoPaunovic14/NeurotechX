@@ -38,10 +38,10 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
-    private final String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=3";
-    private final String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=3&x=";
-    private final String SLEEPY_URL = "http://192.168.0.13:3000/resetSleepy/?id=3";
-    private final String NOTIFY_URL = "http://192.168.0.13:3000/changeNotify/?id=3";
+    private final String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
+    private final String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
+    private final String SLEEPY_URL = "http://192.168.0.13:3000/resetSleepy/?id=2";
+    private final String NOTIFY_URL = "http://192.168.0.13:3000/changeNotify/?id=2";
 
 
     LocationManager locationManager;
