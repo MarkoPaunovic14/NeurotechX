@@ -36,7 +36,6 @@ import retrofit2.Retrofit;
 public class MainActivity extends AppCompatActivity {
 
     private Retrofit retrofit;
-    private RetrofitInterface retrofitInterface;
     private String BASE_URL = "http://192.168.0.13:3000/pullUser/?id=2";
     private String LOCATION_URL = "http://192.168.0.13:3000/locationChange/?id=2&x=";
 
@@ -45,15 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private static MediaPlayer mp;
     Vibrator v;
 
-    TextView textViewLatitude;
-    TextView textViewLongitude;
-
 
     Button btnAwake;
-    TextView txtJson;
     ProgressDialog pd;
-    @SuppressLint("MissingInflatedId")
-    @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -63,11 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
-        textViewLatitude = findViewById(R.id.textview_latitude);
-        textViewLongitude = findViewById(R.id.textview_longitude);
         btnAwake = findViewById(R.id.btnAwake);
-        txtJson = (TextView) findViewById(R.id.tvJsonItem);
-
         btnAwake.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,10 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 10, 1, new LocationListener() {
                     @Override
                     public void onLocationChanged(@NonNull Location location) {
-                        System.out.println("AAAAAAAAAAAAAAA" + String.valueOf(location.getLatitude()));
                         // TODO UPDATE Location
-                        textViewLatitude.setText(String.valueOf(location.getLatitude()));
-                        textViewLongitude.setText(String.valueOf(location.getLongitude()));
 
                         StringBuilder locationUrl = new StringBuilder(LOCATION_URL);
                         locationUrl.append(String.valueOf(location.getLatitude()));
@@ -139,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
             pd = new ProgressDialog(MainActivity.this);
             pd.setMessage("Please wait");
-            pd.setCancelable(false);
+            pd.setCancelable(true);
             pd.show();
         }
 
@@ -154,7 +141,15 @@ public class MainActivity extends AppCompatActivity {
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
 
+                System.out.println(url);
 
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+
+
+//                System.out.println(result);
 
                 return "";
 
@@ -188,95 +183,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private class JsonTask extends AsyncTask<String, String, String> {
 
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-            pd = new ProgressDialog(MainActivity.this);
-            pd.setMessage("Please wait");
-            pd.setCancelable(false);
-            pd.show();
-        }
-
-        protected String doInBackground(String... params) {
-
-
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-
-            try {
-                URL url = new URL(params[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-
-
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                }
-//
-//                String result = buffer.toString();
-//                result = result.replaceAll("<[^>]*>", "");
-
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            if (pd.isShowing()){
-                pd.dismiss();
-            }
-            if(result != null) {
-
-                //notify
-                if ("1".charAt(0) == result.trim().charAt(result.length() - 3)) {
-                    Toast.makeText(MainActivity.this, "DANGEROUS DRIVER NEARBY!", Toast.LENGTH_SHORT).show();
-                    // Moze notifikacija
-                    // TODO Sound upozorenja, UPDATE server
-                }
-
-                //sleepy
-                if ("1".charAt(0) == result.trim().charAt(result.length() - 14)) {
-                    Toast.makeText(MainActivity.this, "Pull Over And Take A Power Nap!", Toast.LENGTH_SHORT).show();
-                    if (mp.isPlaying()) {
-                        mp.seekTo(0);
-                    } else {
-                        mp.start();
-                        v.vibrate(3000);
-                    }
-                }
-            }
-        }
-    }
 
 
 
