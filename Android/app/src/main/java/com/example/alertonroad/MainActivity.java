@@ -42,7 +42,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     LocationManager locationManager;
-    public static MediaPlayer mp;
+    public static MediaPlayer mpSleepy;
+    public static MediaPlayer mpNotify;
+
     public static Vibrator v;
 
 
@@ -53,7 +55,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mp = MediaPlayer.create(this, R.raw.ringtone1);
+        mpSleepy = MediaPlayer.create(this, R.raw.youaretired);
+        mpNotify = MediaPlayer.create(this, R.raw.pleasebealert);
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
 
@@ -66,16 +69,22 @@ public class MainActivity extends AppCompatActivity {
                 // TODO UPDATE server da je sleepy = 0
 
                 new UpdateLocationTask().execute(SLEEPY_URL);
-                if (mp != null) {
-                    if (mp.isPlaying())
-                        mp.stop();
+                if (mpSleepy != null) {
+                    if (mpSleepy.isPlaying()){
+                        mpSleepy.stop();
+                        try {
+                            mpSleepy.prepare();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         });
 
 
         final Handler handler = new Handler();
-        final int delay = 10000; // 1000 milliseconds == 1 second
+        final int delay = 5000; // 1000 milliseconds == 1 second
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
