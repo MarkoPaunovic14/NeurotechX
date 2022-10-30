@@ -19,7 +19,7 @@ async function changeData(req, res, next) {
         const x = req.query.x;
         const y = req.query.y;
         const user = await model.changeData(id, x, y);
-        console.log("Changed user ------> " + user)
+        console.log("Changed user location ------> " + user.id + " " + user.location);
         res.render('1.ejs', {user});
         //izmena podataka
     }
@@ -30,16 +30,42 @@ async function changeData(req, res, next) {
 
 async function changeNotify(req, res, next) {
     try{
-        
+        const id = req.query;
+        const user = await model.changeNotify(id);
+        console.log("Changed notify back to 0 for user --> " + user.id);
+        res.render('1.ejs', {user});
     }
     catch(err){
         next(err);
     }
 }
 
+async function setSleepy(req, res, next){
+    try {
+     const id = req.query;
+     const user = await model.setSleepy(id);
+     console.log("Change sleepy to 1 for user ---> " + user.id);
+     res.render('1.ejs', {user});   
+    } catch (err) {
+        next(err);
+    }
+}
+
+async function resetSleepy(req, res, next){
+    try {
+        const id = req.query;
+        const user = await model.setSleepy(id);
+        console.log("Change sleepy to 0 for user ---> " + user.id);
+        res.render('1.ejs', {user});   
+       } catch (err) {
+           next(err);
+       }
+}
 
 module.exports = {
     pullUser,
     changeData,
     changeNotify,
+    setSleepy,
+    resetSleepy,
 };
